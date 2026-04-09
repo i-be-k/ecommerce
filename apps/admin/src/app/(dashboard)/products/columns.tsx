@@ -1,5 +1,8 @@
 "use client";
 
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
+import EditProduct from "@/components/EditProduct";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -53,6 +56,14 @@ export const columns: ColumnDef<ProductType>[] = [
     header: "Name",
   },
   {
+    accessorKey: "category",
+    header: "Category",
+    cell: ({ row }) => {
+      const product = row.original;
+      return <span>{(product as any).category?.name || product.categorySlug}</span>;
+    },
+  },
+  {
     accessorKey: "image",
     header: "Image",
     cell: ({ row }) => {
@@ -101,27 +112,34 @@ export const columns: ColumnDef<ProductType>[] = [
       const product = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(product.id.toString())}
-            >
-              Copy product ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={`/products/${product.id}`}>View product</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>View product details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Sheet>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(product.id.toString())}
+              >
+                Copy product ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href={`/products/${product.id}`}>View product</Link>
+              </DropdownMenuItem>
+              <SheetTrigger asChild>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                  Edit product
+                </DropdownMenuItem>
+              </SheetTrigger>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <EditProduct product={product} />
+        </Sheet>
       );
     },
   },

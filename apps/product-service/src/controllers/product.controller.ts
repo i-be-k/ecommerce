@@ -80,15 +80,28 @@ export const getProducts = async (req: Request, res: Response) => {
         }
     })();
     
+    const where: Prisma.ProductWhereInput = {
+        ...(category && category !== "all"
+            ? {
+                category: {
+                    slug: category as string,
+                },
+              }
+            : {}),
+        ...(search
+            ? {
+                name: {
+                    contains: search as string,
+                    mode: "insensitive",
+                },
+              }
+            : {}),
+    };
+
     const products = await prisma.product.findMany({
-        where: {
-            category: {
-                slug: category as string,
-            },
-            name: {
-                contains: search as string,
-                mode: "insensitive"
-            }
+        where,
+        include: {
+            category: true,
         },
         orderBy,
         take: limit ? Number(limit) : undefined,
@@ -101,6 +114,9 @@ export const getProduct = async (req: Request, res: Response) => {
 
     const product = await prisma.product.findUnique({
         where: { id: Number(id) },
+        include: {
+            category: true,
+        },
     });
     return res.status(200).json(product);
 };
