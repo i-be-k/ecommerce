@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ibkshop - Best E-commerce Store",
+  title: "OpsyCart - Best E-commerce Store",
   description: "Ibkshop is the best store to find the trust worthy products online",
 };
 
