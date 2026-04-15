@@ -9,11 +9,35 @@ import Filter from "./Filter";
 const fetchData = async ({
     category, sort, search, params
 }: {category?: string, sort?: string, search?: string, params: "homepage" | "products"}) => {
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products?${category ? `category=${category}` : ""}${search ? `&search=${search}` : ""}&sort=${sort || "newest"}${params === "homepage" ? "&limit=8" : ""}`
-    );
-    const data: ProductType[] = await res.json();
-    return data;
+    const url = new URL(`${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products`);
+    
+    if (category && category !== "all") {
+        url.searchParams.append("category", category);
+    }
+    if (search) {
+        url.searchParams.append("search", search);
+    }
+    url.searchParams.append("sort", sort || "newest");
+    if (params === "homepage") {
+        url.searchParams.append("limit", "8");
+    }
+
+    try {
+        const res = await fetch(url.toString(), {
+            cache: 'no-store' // Ensure we get fresh data
+        });
+        
+        if (!res.ok) {
+            console.error(`Failed to fetch products: ${res.status} ${res.statusText}`);
+            return [];
+        }
+        
+        const data: ProductType[] = await res.json();
+        return Array.isArray(data) ? data : [];
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        return [];
+    }
 };
 const ProductList = async ({ 
     category,

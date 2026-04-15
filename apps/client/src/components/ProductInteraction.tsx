@@ -95,21 +95,36 @@ const ProductInteraction = ({
             <div className="flex flex-col gap-2 text-sm">
                 <span className="text-gray-500">Quantity</span>
                 <div className="flex items-center gap-2">
-                    <button title="decrease" className="cursor-pointer border-1 border-gray-300 p-1" onClick={() => handleQuantityChange("decrement")}>
+                    <button 
+                        title="decrease" 
+                        className="cursor-pointer border-1 border-gray-300 p-1" 
+                        onClick={() => handleQuantityChange("decrement")}
+                    >
                         <Minus className="w-4 h-4" />
                     </button>
                     <span>{quantity}</span>
-                    <button title="increase" className="cursor-pointer border-1 border-gray-300 p-1" onClick={() => handleQuantityChange("increment")}>
+                    <button 
+                        title="increase" 
+                        className="cursor-pointer border-1 border-gray-300 p-1" 
+                        onClick={() => handleQuantityChange("increment")}
+                    >
                         <Plus className="w-4 h-4" />
                     </button>
                 </div>
             </div>
             {/* BUTTONS */}
-            <button onClick={handleAddToCart} title="add to cart" className="bg-gray-800 text-white px-4 py-2 rounded-md shadow-lg flex items-center justify-center gap-2 cursor-pointer text-sm font-medium">
+            <button
+                onClick={handleAddToCart}
+                title="add to cart"
+                className="bg-gray-800 text-white px-4 py-2 rounded-md shadow-lg flex items-center justify-center gap-2 cursor-pointer text-sm font-medium"
+            >
                 Add to Cart
                 <Plus className="w-4 h-4" />
             </button>
-            <button title="cart" className="ring-1 ring-gray-400 shadow-lg text-gray-800 px-4 py-2 rounded-md flex items-center justify-center gap-2 cursor-pointer text-sm font-medium">
+            <button
+                title="cart"
+                className="ring-1 ring-gray-400 shadow-lg text-gray-800 px-4 py-2 rounded-md flex items-center justify-center gap-2 cursor-pointer text-sm font-medium"
+            >
                 Buy this Item
                 <ShoppingBasket className="w-4 h-4" />
             </button>
