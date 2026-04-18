@@ -8,9 +8,9 @@ import Filter from "./Filter";
 
 const fetchData = async ({
     category, sort, search, params
-}: {category?: string, sort?: string, search?: string, params: "homepage" | "products"}) => {
+}: { category?: string, sort?: string, search?: string, params: "homepage" | "products" }) => {
     const url = new URL(`${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products`);
-    
+
     if (category && category !== "all") {
         url.searchParams.append("category", category);
     }
@@ -19,19 +19,19 @@ const fetchData = async ({
     }
     url.searchParams.append("sort", sort || "newest");
     if (params === "homepage") {
-        url.searchParams.append("limit", "8");
+        url.searchParams.append("limit", "12");
     }
 
     try {
         const res = await fetch(url.toString(), {
             cache: 'no-store' // Ensure we get fresh data
         });
-        
+
         if (!res.ok) {
             console.error(`Failed to fetch products: ${res.status} ${res.statusText}`);
             return [];
         }
-        
+
         const data: ProductType[] = await res.json();
         return Array.isArray(data) ? data : [];
     } catch (error) {
@@ -39,16 +39,16 @@ const fetchData = async ({
         return [];
     }
 };
-const ProductList = async ({ 
+const ProductList = async ({
     category,
     sort,
     search,
-    params 
-} : { 
+    params
+}: {
     category: string;
     sort?: string;
     search?: string;
-    params:"homepage" | "products";
+    params: "homepage" | "products";
 }) => {
     const products = await fetchData({ category, sort, search, params })
     return (
