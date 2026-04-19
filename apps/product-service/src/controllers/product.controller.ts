@@ -60,6 +60,33 @@ export const deleteProduct = async (req: Request, res: Response) => {
     return res.status(200).json(deletedProduct);
 };
 
+function getCategoryVariants(category: string): string[] {
+    const cat = category.toLowerCase();
+    const variants = new Set<string>([cat]);
+
+    // -ies → -y (accessories → accessory, categories → category)
+    if (cat.endsWith('ies')) {
+        variants.add(cat.slice(0, -3) + 'y');
+    }
+    // -y → -ies (accessory → accessories) for consonant + y
+    if (cat.endsWith('y') && !/[aeiou]y$/.test(cat)) {
+        variants.add(cat.slice(0, -1) + 'ies');
+    }
+    // -es → strip (dresses → dress, shoes → shoe)
+    if (cat.endsWith('es')) {
+        variants.add(cat.slice(0, -2));
+    }
+    // -s → strip (bags → bag, jackets → jacket)
+    if (cat.endsWith('s') && !cat.endsWith('ss')) {
+        variants.add(cat.slice(0, -1));
+    }
+    // add +s and +es
+    variants.add(cat + 's');
+    variants.add(cat + 'es');
+
+    return Array.from(variants).filter(Boolean);
+}
+
 export const getProducts = async (req: Request, res: Response) => {
     const { sort, category, search, limit } = req.query;
 
@@ -83,10 +110,11 @@ export const getProducts = async (req: Request, res: Response) => {
     const where: Prisma.ProductWhereInput = {
         ...(category && category !== "all"
             ? {
-                category: {
-                    slug: category as string,
+                categorySlug: {
+                    in: getCategoryVariants(category as string),
+                    mode: "insensitive",
                 },
-              }
+            }
             : {}),
         ...(search
             ? {
@@ -94,7 +122,7 @@ export const getProducts = async (req: Request, res: Response) => {
                     contains: search as string,
                     mode: "insensitive",
                 },
-              }
+            }
             : {}),
     };
 
