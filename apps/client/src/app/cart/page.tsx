@@ -3,11 +3,11 @@
 import ShippingForm from "@/components/ShippingForm";
 import StripePaymentForm from "@/components/StripePaymentForm";
 import useCartStore from "@/stores/cartStore";
-import { CartItemsType, ShippingFormInputs } from "@repo/types";
+import { ShippingFormInputs } from "@repo/types";
 import { ArrowRight, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { formatCurrency } from "@/utils/formatCurrency";
 
 const steps = [
@@ -24,65 +24,8 @@ const steps = [
         title: "Payment Method"
     },
 ]
-// TEMPORARY CART ITEMS FOR DESIGN PURPOSE
-// const cartItems: CartItemsType = [
-//     {
-//         id: 1,
-//         name: "Adidas CoreFit T-Shirt",
-//         shortDescription:
-//             "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-//         description:
-//             "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-//         price: 39999.99,
-//         sizes: ["s", "m", "l", "xl", "xxl"],
-//         colors: ["gray", "purple", "green"],
-//         images: {
-//             gray: "/products/1g.png",
-//             purple: "/products/1p.png",
-//             green: "/products/1gr.png",
-//         },
-//         quantity: 1,
-//         selectedSize: "m",
-//         selectedColor: "gray"
-//     },
-//     {
-//         id: 2,
-//         name: "Puma Ultra Warm Zip",
-//         shortDescription:
-//             "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-//         description:
-//             "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-//         price: 59999.79,
-//         sizes: ["s", "m", "l", "xl"],
-//         colors: ["gray", "green"],
-//         images: { gray: "/products/2g.png", green: "/products/2gr.png" },
-//         quantity: 1,
-//         selectedSize: "l",
-//         selectedColor: "gray"
-//     },
 
-//     {
-//         id: 3,
-//         name: "Nike Air Essentials Pullover",
-//         shortDescription:
-//             "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-//         description:
-//             "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-//         price: 69999.98,
-//         sizes: ["s", "m", "l"],
-//         colors: ["green", "blue", "black"],
-//         images: {
-//             green: "/products/3gr.png",
-//             blue: "/products/3b.png",
-//             black: "/products/3bl.png",
-//         },
-//         quantity: 1,
-//         selectedSize: "m",
-//         selectedColor: "black"
-//     },
-// ]
-
-const CartPage = () => {
+const CartContent = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [shippingForm, setShippingForm] = useState<ShippingFormInputs>();
@@ -215,5 +158,13 @@ const CartPage = () => {
         </div>
     )
 }
+
+const CartPage = () => {
+    return (
+        <Suspense fallback={<div className="mt-12 text-center text-gray-500">Loading cart...</div>}>
+            <CartContent />
+        </Suspense>
+    );
+};
 
 export default CartPage;
