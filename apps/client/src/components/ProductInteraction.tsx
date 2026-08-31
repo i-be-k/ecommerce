@@ -26,7 +26,7 @@ const ProductInteraction = ({
     const handleTypeChange = (type: string, value: string) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set(type, value);
-        router.push(`${pathname} ? ${params.toString()}`, { scroll: false });
+        router.push(`${pathname}?${params.toString()}`, { scroll: false });
     };
 
     const handleQuantityChange = (type: "increment" | "decrement") => {
