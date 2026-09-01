@@ -37,8 +37,9 @@ const start = async () => {
                 },
             },
         ]);
+        console.log("Email service subscribed to Kafka topics successfully.");
     } catch (error) {
-        console.log(error);
+        console.warn("Kafka broker unreachable (email-service running in standby mode):", error);
     }
 };
 
