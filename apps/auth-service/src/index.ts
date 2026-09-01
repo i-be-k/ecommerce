@@ -33,11 +33,17 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
         .json({ message: err.message || "Internal Server Error!" });
 });
 
+const PORT = process.env.PORT || 8003;
+
 const start = async () => {
     try {
-        await producer.connect();
-        app.listen(8003, () => {
-            console.log("Auth service is running on port 8003");
+        try {
+            await producer.connect();
+        } catch (kafkaErr) {
+            console.warn("Kafka connection skipped/failed:", kafkaErr);
+        }
+        app.listen(PORT, () => {
+            console.log(`Auth service is running on port ${PORT}`);
         });
     } catch (error) {
         console.log(error);

@@ -39,11 +39,19 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
         .json({ message: err.message || "Internal Server Error!" });
 });
 
+const PORT = process.env.PORT || 8000;
+
 const start = async () => {
     try {
-        Promise.all([await producer.connect(), await consumer.connect()]);
-        app.listen(8000, () => {
-            console.log("Product service is running on port 8000");
+        try {
+            await Promise.all([producer.connect(), consumer.connect()]);
+            console.log("Connected to Kafka");
+        } catch (kafkaErr) {
+            console.warn("Kafka connection failed, continuing without Kafka:", kafkaErr);
+        }
+        
+        app.listen(PORT, () => {
+            console.log(`Product service is running on port ${PORT}`);
         });
     } catch (error) {
         console.log(error);

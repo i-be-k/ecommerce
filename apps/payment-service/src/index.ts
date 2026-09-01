@@ -48,17 +48,23 @@ app.route("/webhooks", webhookRoute);
 //     return c.json(res);
 // });
 
+const PORT = parseInt(process.env.PORT || "8002");
+
 const start = async () => {
   try {
-    Promise.all([await producer.connect(), await consumer.connect()]);
-    await runKafkaSubscriptions();
+    try {
+      await Promise.all([producer.connect(), consumer.connect()]);
+      await runKafkaSubscriptions();
+    } catch (kafkaErr) {
+      console.warn("Kafka connection skipped/failed:", kafkaErr);
+    }
     serve(
       {
         fetch: app.fetch,
-        port: 8002,
+        port: PORT,
       },
       (info) => {
-        console.log(`Payment service is running on port 8002`);
+        console.log(`Payment service is running on port ${PORT}`);
       }
     );
   } catch (error) {

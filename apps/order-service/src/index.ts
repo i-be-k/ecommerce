@@ -27,16 +27,19 @@ fastify.get("/test", { preHandler: shouldBeUser }, (request, reply) => {
 
 fastify.register(orderRoute);
 
+const PORT = parseInt(process.env.PORT || "8001");
+
 const start = async () => {
     try {
-        Promise.all([
-            await connectOrderDB(), 
-            await producer.connect(), 
-            await consumer.connect()
-        ]);
-        await runKafkaSubscriptions();
-        await fastify.listen({ port: 8001 });
-        console.log("Order service is running on port 8001");
+        await connectOrderDB();
+        try {
+            await Promise.all([producer.connect(), consumer.connect()]);
+            await runKafkaSubscriptions();
+        } catch (kafkaErr) {
+            console.warn("Kafka connection skipped/failed:", kafkaErr);
+        }
+        await fastify.listen({ port: PORT, host: "0.0.0.0" });
+        console.log(`Order service is running on port ${PORT}`);
     } catch (err) {
         console.log(err);
         process.exit(1);
