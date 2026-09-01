@@ -4,7 +4,20 @@ import { createConsumer, createKafkaClient } from "@repo/kafka";
 const kafka = createKafkaClient("email-service");
 const consumer = createConsumer(kafka, "email-service");
 
+import express, { Request, Response } from "express";
+
+const app = express();
+const PORT = process.env.PORT || 8004;
+
+app.get("/health", (req: Request, res: Response) => {
+    res.status(200).json({ status: "ok", service: "email-service" });
+});
+
 const start = async () => {
+    app.listen(PORT, () => {
+        console.log(`Email service HTTP server running on port ${PORT}`);
+    });
+
     try {
         await consumer.connect();
         await consumer.subscribe([
