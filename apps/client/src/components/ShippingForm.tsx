@@ -6,20 +6,20 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 const ShippingForm = ({
     setShippingForm,
-} : {
-    setShippingForm : (data : ShippingFormInputs) => void;
+}: {
+    setShippingForm: (data: ShippingFormInputs) => void;
 }) => {
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<ShippingFormInputs>({
-        resolver: zodResolver(shippingFormSchema as any),
+        resolver: zodResolver(shippingFormSchema),
     });
 
     const router = useRouter();
 
-    const handleShippingForm : SubmitHandler <ShippingFormInputs> = (data) => {
+    const handleShippingForm: SubmitHandler<ShippingFormInputs> = (data) => {
         setShippingForm(data);
         router.push("/cart?step=3", { scroll: false });
     }
@@ -37,7 +37,7 @@ const ShippingForm = ({
                     id="name"
                     placeholder="Opsy Ibk"
                     {...register("name")}
-                    // value="Opsy Ibk"
+                // value="Opsy Ibk"
                 />
                 {errors.name && (
                     <p className="text-xs text-red-500">{errors.name.message}</p>
@@ -51,7 +51,7 @@ const ShippingForm = ({
                     id="email"
                     placeholder="opsyibk@gmail.com"
                     {...register("email")}
-                    // value="opsyibk@gmail.com"
+                // value="opsyibk@gmail.com"
                 />
                 {errors.email && (
                     <p className="text-xs text-red-500">{errors.email.message}</p>
@@ -65,7 +65,7 @@ const ShippingForm = ({
                     id="phone"
                     placeholder="123456789"
                     {...register("phone")}
-                    // value="123456789"
+                // value="123456789"
                 />
                 {errors.phone && (
                     <p className="text-xs text-red-500">{errors.phone.message}</p>
@@ -79,7 +79,7 @@ const ShippingForm = ({
                     id="address"
                     placeholder="#1 Earthling Drive-way, Anytown"
                     {...register("address")}
-                    // value="#1 Earthling Drive-way, Anytown"
+                // value="#1 Earthling Drive-way, Anytown"
                 />
                 {errors.address && (
                     <p className="text-xs text-red-500">{errors.address.message}</p>
@@ -93,7 +93,7 @@ const ShippingForm = ({
                     id="city"
                     placeholder="City Town"
                     {...register("city")}
-                    // value="City Town"
+                // value="City Town"
                 />
                 {errors.city && (
                     <p className="text-xs text-red-500">{errors.city.message}</p>
