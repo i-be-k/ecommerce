@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Image from "next/image";
 import { Card, CardContent, CardFooter, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -176,7 +178,7 @@ const CardList = async ({ title }: { title: string }) => {
               <CardFooter className="p-0">{formatCurrency(Number(item.price))}</CardFooter>
             </Card>
           )) : orders.map((item) => (
-            <Card 
+            <Card
               key={item._id}
               className="flex-row items-center justify-between gap-4 p-4"
             >
