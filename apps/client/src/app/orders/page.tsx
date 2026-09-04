@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { formatCurrency } from "@/utils/formatCurrency";
 import { auth } from "@clerk/nextjs/server";
 import { OrderType } from "@repo/types";
@@ -7,7 +9,7 @@ const fetchOrders = async () => {
     const token = await getToken();
 
     const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/user-orders`, 
+        `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/user-orders`,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
