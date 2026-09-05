@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { ProductsType } from "@repo/types";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
