@@ -65,7 +65,7 @@ export function DataTable<TData, TValue>({
       Promise.all(
         selectedRows.map(async (row) => {
           const userId = (row.original as User).id;
-          const res = await fetch(
+          await fetch(
             `${process.env.NEXT_PUBLIC_AUTH_SERVICE_URL}/users/${userId}`,
             {
               method: "DELETE",

@@ -13,7 +13,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { ProductType } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";

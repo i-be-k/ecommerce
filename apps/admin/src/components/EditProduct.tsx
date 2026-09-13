@@ -35,6 +35,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuth } from "@clerk/nextjs";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const fetchCategories = async () => {
   const res = await fetch(
@@ -358,7 +359,7 @@ const EditProduct = ({ product }: { product: ProductType }) => {
                                 {field.value?.[color] ? (
                                   <span className="text-green-600 text-sm flex gap-2 items-center">
                                     <div className="w-8 h-8 relative rounded-full overflow-hidden">
-                                      <img src={field.value?.[color]} alt={color} className="object-cover w-full h-full" />
+                                      <Image src={field.value?.[color]} alt={color} fill className="object-cover" />
                                     </div>
                                     Image selected
                                   </span>

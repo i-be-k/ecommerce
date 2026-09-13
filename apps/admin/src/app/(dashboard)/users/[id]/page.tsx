@@ -1,7 +1,5 @@
 export const dynamic = 'force-dynamic';
 
-import CardList from "@/components/CardList";
-import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
